@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Login";
+    ViewData["PageStyles"] = new[] { "css/storefront/dangnhap.css" };
+    ViewData["UseStorefrontChrome"] = false;
+}
+<section>
+        <div class="img-bg">
+            <img src="/images/products/general/337847477_3350683008530395_3234525640222793512_n.jpg"
+                alt="Hình Ảnh Minh Họa">
+        </div>
+    
+        <div class="noi-dung">
+            <div class="form">
+                <h2>Trang Đăng Nhập</h2>
+                <form action="">
+                    <div class="input-form">
+                        <span>Tên Người Dùng</span>
+                        <input type="text" name="">
+                    </div>
+                    <div class="input-form">
+                        <span>Mật Khẩu</span>
+                        <input type="password" name="">
+                    </div>
+                    <div class="nho-dang-nhap">
+                        <label><input type="checkbox" name=""> Nhớ Đăng Nhập</label>
+                    </div>
+                    <div class="input-form">
+                        <input type="submit" value="Đăng Nhập">
+                    </div>
+                    <div class="input-form">
+                        <p>Bạn Chưa Có Tài Khoản? <a href="/Storefront/Register">Đăng Ký</a></p>
+                    </div>
+                </form>
+                <h3>Đăng Nhập Bằng Mạng Xã Hội</h3>
+                <ul class="icon-dang-nhap">
+                    <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-google" aria-hidden="true"></i></li>
+                    <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+                </ul>
+            </div>
+        </div>
+    </section>

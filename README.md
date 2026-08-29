@@ -1,69 +1,65 @@
-# Project API - Authentication & User Session Management
+# Project API - Authentication, Session Management & Product Backend
 
-Backend API được xây dựng bằng ASP.NET Core 8, tập trung vào quy trình xác thực người dùng và quản lý phiên đăng nhập theo thiết bị. Dự án được tổ chức theo hướng tách lớp giữa Application, Business và DataAccess, giúp phân tách phần HTTP endpoint, nghiệp vụ và truy cập dữ liệu.
+Dự án này là một backend ASP.NET Core 8 được xây dựng cho một hệ thống thương mại điện tử đơn giản, tập trung vào xác thực người dùng, quản lý session và phục vụ dữ liệu sản phẩm cho giao diện storefront. Đây là một project backend thực tế, tích hợp nhiều thành phần quan trọng như đăng nhập, refresh token, kiểm soát thiết bị, avatar user và API danh mục/sản phẩm.
 
-## Điểm nổi bật
+## Mục tiêu dự án
 
-- Đăng ký tài khoản và kiểm tra email đã tồn tại.
-- Mã hóa mật khẩu bằng BCrypt trước khi lưu vào cơ sở dữ liệu.
-- Đăng nhập bằng JWT access token.
-- Cấp và xoay vòng refresh token; refresh token được lưu trong HttpOnly cookie.
-- Theo dõi session theo `DeviceID`, IP và User-Agent.
-- Thu hồi session cũ khi đăng nhập lại hoặc khi refresh token hết hạn/sai thiết bị.
-- Đăng xuất và thu hồi refresh token.
-- Upload avatar cho tài khoản đã xác thực, đồng thời xóa avatar cũ.
-- Swagger/OpenAPI hỗ trợ kiểm tra API trong môi trường Development.
+- Xây dựng hệ thống xác thực người dùng an toàn
+- Quản lý phiên đăng nhập theo từng thiết bị và trình duyệt
+- Cấp phát và làm mới JWT access token bằng refresh token
+- Tạo API dữ liệu sản phẩm cho giao diện web/mobile
+- Tách rõ tầng controller, business logic và data access để code dễ bảo trì
+- Làm nền tảng cho các dự án backend có thể mở rộng thêm quyền truy cập, quản trị, giỏ hàng và thanh toán
+
+## Tính năng chính
+
+- Đăng ký tài khoản mới
+- Kiểm tra email đã tồn tại trước khi tạo user
+- Mã hóa mật khẩu bằng BCrypt
+- Đăng nhập với JWT access token
+- Làm mới token bằng refresh token trong cookie HttpOnly
+- Giới hạn session theo `DeviceID`, `User-Agent` và IP
+- Thu hồi session cũ khi user đăng nhập lại hoặc token không hợp lệ
+- Đăng xuất và hủy session hiện tại
+- Upload avatar cho tài khoản đã xác thực
+- API lấy danh sách sản phẩm và chi tiết sản phẩm
+- Sử dụng cache phân tán để tăng hiệu suất truy vấn sản phẩm
+- Tích hợp Swagger/OpenAPI cho kiểm tra API trong môi trường phát triển
 
 ## Công nghệ sử dụng
 
-- .NET 8 / ASP.NET Core Web API
-- Entity Framework Core 8
+- ASP.NET Core 8
+- C#
 - SQL Server
+- Entity Framework Core
+- Dapper
 - JWT Bearer Authentication
 - BCrypt.Net
+- Redis / Distributed Cache
 - Swagger / OpenAPI
 
-## Kiến trúc solution
+## Kiến trúc dự án
 
 ```text
-Application/   HTTP pipeline, controller và cấu hình ứng dụng
-Business/      Interface, service nghiệp vụ, JWT và middleware
-DataAccess/    Entity, DbContext và cấu hình truy cập dữ liệu
+Application/   Chứa controllers, routing, middleware và cấu hình API
+Business/      Chứa service nghiệp vụ, JWT, auth, session và logic sản phẩm
+DataAccess/    Chứa model, DbContext, entity và kết nối dữ liệu
 ```
 
-## API chính
+## Kỹ năng thể hiện trong dự án
 
-| Method | Endpoint | Mô tả |
-| --- | --- | --- |
-| `POST` | `/Home/Register` | Tạo tài khoản mới |
-| `POST` | `/Home/Login` | Đăng nhập và nhận access token |
-| `POST` | `/Home/Refresh_Token` | Cấp access token mới từ refresh token |
-| `POST` | `/Home/Logout` | Thu hồi session hiện tại |
-| `POST` | `/Home/Post_Avatar` | Upload avatar, yêu cầu JWT |
+- Backend API development
+- Authentication & Authorization
+- JWT and refresh token flow
+- User session and device tracking
+- File upload and avatar handling
+- Product API design
+- Caching for performance optimization
+- Clean layered architecture
+- Database interaction with EF Core and Dapper
 
-## Chạy project
+## Giá trị của dự án
 
-### Yêu cầu
-
-- .NET SDK 8.0+
-- SQL Server
-
-### Cấu hình
-
-Đặt connection string và các thiết lập JWT trong `Application/appsettings.Development.json`. Không commit secret thật lên repository; nên dùng User Secrets hoặc biến môi trường khi triển khai.
-
-### Khởi động
-
-```bash
-dotnet restore
-dotnet build
-dotnet run --project Application/Application.csproj
-```
-
-Khi chạy ở môi trường Development, mở URL Swagger được hiển thị trong terminal để xem và thử các endpoint.
-
-## Mục tiêu học tập
-
-Dự án thể hiện khả năng xây dựng một Web API có xác thực, làm việc với cơ sở dữ liệu quan hệ, mã hóa mật khẩu, quản lý vòng đời token và tổ chức code theo nhiều project. Đây là nền tảng để tiếp tục bổ sung validation bằng DTO, migration, phân quyền, logging, test tự động và triển khai production.
+Dự án này thể hiện khả năng xây dựng một backend thực tế cho hệ thống thương mại điện tử, với các vấn đề bảo mật, quản lý session và API dữ liệu quan trọng. Nó phù hợp để giới thiệu trong CV hoặc portfolio khi muốn chứng minh kỹ năng về ASP.NET Core, JWT, bảo mật API, thiết kế backend và xử lý dữ liệu sản phẩm trong môi trường thực tế.
 
 

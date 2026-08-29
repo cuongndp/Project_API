@@ -17,6 +17,14 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Avatars\" />
+    <Folder Include="wwwroot\images\Máy cũ giá rẻ\" />
+    <Folder Include="wwwroot\images\Màn hình máy tính\" />
+    <Folder Include="wwwroot\images\PC văn phòng\" />
+    <Folder Include="wwwroot\images\PC giá rẻ\" />
+    <Folder Include="wwwroot\images\Phụ kiện\Chuột\" />
+    <Folder Include="wwwroot\images\Phụ kiện\Bàn phím\" />
+    <Folder Include="wwwroot\images\Phụ kiện\USB\" />
+    <Folder Include="wwwroot\images\Phụ kiện\Tai nghe\" />
   </ItemGroup>
 
 </Project>

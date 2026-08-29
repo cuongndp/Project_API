@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Application.Controller
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/home")]
     public class HomeController : ControllerBase
     {
 
@@ -62,6 +62,7 @@ namespace Application.Controller
                 Message = "Refresh Token không hợp lệ hoặc đã hết hạn"
             });
         }
+        [Authorize]
         [HttpPost("Logout")]
         public async Task<IActionResult>Logout()
         {

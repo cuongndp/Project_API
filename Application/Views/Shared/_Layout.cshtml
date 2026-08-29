@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Phúc Cường Computer</title>
+    <link rel="stylesheet" href="~/css/storefront.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    @if (ViewData["PageStyles"] is string[] pageStyles)
+    {
+        foreach (var pageStyle in pageStyles)
+        {
+            <link rel="stylesheet" href="~/@pageStyle" asp-append-version="true" />
+        }
+    }
+</head>
+<body>
+    @if (ViewData["UseStorefrontChrome"] as bool? != false)
+    {
+        <header class="storefront-banner">
+            <img src="/images/branding/AnhDau.PNG" alt="Phúc Cường Computer" />
+        </header>
+        <nav class="storefront-nav">
+            <div class="container">
+                <ul>
+                    <li><a class="storefront-brand" asp-controller="Storefront" asp-action="Index">PHÚC CƯỜNG</a></li>
+                    <li id="adres-form"><button type="button">Xem giá, tồn kho tại:<br />Hồ Chí Minh <i class="fa-solid fa-sort-down"></i></button></li>
+                    <li class="storefront-search"><input type="search" placeholder="Bạn muốn tìm gì" aria-label="Tìm kiếm" /><i class="fa-solid fa-magnifying-glass"></i></li>
+                    <li><a asp-controller="Storefront" asp-action="Monitors"><button type="button"><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng</button></a></li>
+                    <li><a asp-controller="Storefront" asp-action="Monitors">Lịch sử<br />đơn hàng</a></li>
+                    <li><a asp-controller="Storefront" asp-action="Monitors">Thẻ nạp ngay</a></li>
+                    <li><a asp-controller="Storefront" asp-action="Monitors">24h Công Nghệ</a></li>
+                    <li><a asp-controller="Storefront" asp-action="Register">ĐĂNG KÍ</a></li>
+                    <li><a asp-controller="Storefront" asp-action="Login">ĐĂNG NHẬP</a></li>
+                    <li class="adres-form">
+                        <div class="adress-form-content">
+                            <h2>Chọn địa chỉ nhận hàng <button id="adress-close" type="button">Đóng</button></h2>
+                            <p>Chọn đầy đủ địa chỉ nhận hàng để biết chính xác thời gian giao</p>
+                            <select><option>-- Chọn địa điểm</option><option>-- Đà Nẵng</option></select>
+                            <select><option>-- Chọn Quận/Huyện</option><option>-- TP.HCM</option></select>
+                            <select><option>-- Chọn Phường/Xã</option><option>-- Đà Nẵng</option></select>
+                            <input type="text" placeholder="Số nhà, tên đường" />
+                            <button type="button">Xác nhận</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <section class="menu-bar">
+            <div class="container">
+                <div class="menu-bar-content">
+                    <ul>
+                        <li><a asp-controller="Storefront" asp-action="BudgetPcs"><i class="fa-solid fa-computer"></i> PC GIÁ RẺ</a></li>
+                        <li><a asp-controller="Storefront" asp-action="OfficePcs"><i class="fa-solid fa-computer"></i> PC VĂN PHÒNG</a></li>
+                        <li><a asp-controller="Storefront" asp-action="UsedComputers">MÁY CŨ GIÁ RẺ</a></li>
+                        <li><a asp-controller="Storefront" asp-action="Monitors"><i class="fa-solid fa-desktop"></i> MÀN HÌNH MÁY TÍNH</a></li>
+                        <li><a asp-controller="Storefront" asp-action="Headphones"><i class="fa-solid fa-headphones"></i> PHỤ KIỆN</a>
+                            <ul class="submenu">
+                                <li><a asp-controller="Storefront" asp-action="Headphones">Tai nghe</a></li>
+                                <li><a asp-controller="Storefront" asp-action="Mice">Chuột máy tính</a></li>
+                                <li><a asp-controller="Storefront" asp-action="Keyboards">Bàn phím</a></li>
+                                <li><a asp-controller="Storefront" asp-action="Monitors">USB</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="storefront-toolbar">
+            <div class="storefront-toolbar__search">
+                <input type="search" placeholder="Nhập sản phẩm cần tìm" aria-label="Tìm sản phẩm" />
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="storefront-toolbar__actions">
+                <a href="#"><i class="fa-solid fa-bell"></i> Thông báo</a>
+                <a asp-controller="Storefront" asp-action="Monitors"><i class="fa-solid fa-bag-shopping"></i> Giỏ hàng của bạn (0) sản phẩm</a>
+            </div>
+        </section>
+    }
+    <main role="main">
+        @RenderBody()
+    </main>
+    @if (ViewData["UseStorefrontChrome"] as bool? != false)
+    {
+        <footer class="storefront-footer">
+            <div class="storefront-footer__inner">
+                <div>
+                    <strong>Hỗ trợ khách hàng</strong>
+                    <a href="#">Thẻ ưu đãi</a>
+                    <a href="#">Hướng dẫn mua online</a>
+                    <a href="#">Ưu đãi dành cho doanh nghiệp</a>
+                    <a href="#">Trung tâm bảo hành</a>
+                </div>
+                <div>
+                    <strong>Chính sách mua hàng</strong>
+                    <a href="#">Điều kiện giao dịch chung</a>
+                    <a href="#">Chính sách bảo hành</a>
+                    <a href="#">Chính sách đổi trả</a>
+                    <a href="#">Chính sách thanh toán</a>
+                    <a href="#">Giao hàng và lắp đặt</a>
+                </div>
+                <div>
+                    <strong>Liên hệ tư vấn</strong>
+                    <b class="storefront-footer__hotline">1800 6867</b>
+                    <span>Miễn phí từ 8:00 - 21:00 mỗi ngày</span>
+                    <a href="#">Tìm cửa hàng gần bạn</a>
+                    <a href="#">Kết nối với Phúc Cường</a>
+                </div>
+                <div>
+                    <strong>Phúc Cường Computer</strong>
+                    <span>Thiết bị công nghệ cho mọi nhu cầu</span>
+                    <a asp-controller="Storefront" asp-action="Index">Trang chủ</a>
+                    <span>Website cùng tập đoàn: F.Studio</span>
+                </div>
+            </div>
+            <div class="storefront-footer__company">
+                <strong>CÔNG TY CỔ PHẦN THƯƠNG MẠI - DỊCH VỤ PHÚC CƯỜNG</strong>
+                <span>Giấy chứng nhận đăng ký doanh nghiệp: 0304998358</span>
+                <span>Trụ sở: 117-119-121 Nguyễn Du, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh</span>
+            </div>
+        </footer>
+    }
+    <script src="~/js/storefront.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

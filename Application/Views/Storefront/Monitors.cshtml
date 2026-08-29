@@ -1,0 +1,401 @@
+@{
+    ViewData["Title"] = "Monitors";
+    ViewData["PageStyles"] = new[] { "css/storefront/sp.css" };
+
+}
+<div class='content'>
+  <div class='head legacy-toolbar'>
+    	<div class='danhsach'>
+            <div class='ds'>
+                    <a href=''> 
+                    <i class="fa-solid fa-list" style="color: #004880;"></i>
+                    Danh sách sản phẩm</a>
+                    <ul class="menu_list_1">
+                        <li><a href="/Storefront/Monitors" > Màn hình máy tính</a></li>
+                        <li><a href="/Storefront/Headphones" > Tai nghe</a></li>
+                        <li><a href="/Storefront/Mice">Chuột máy tính</a></li>
+                        <li><a href="/Storefront/Keyboards" >Bàn phím</a></li>
+                        <li><a href="/Storefront/OfficePcs" >PC Văn Phòng</a></li>
+                        <li><a href="" >USB</a></li>
+                    </ul>
+            </div>
+        </div>
+        <div class='find'>
+        	<input type='text' placeholder="Nhập sản phầm cần tìm" size='70' />
+            <a href='' id='find'>
+            <img src="/images/icons/find.png" />
+            </a>
+        </div>
+        <div class='noti'>
+        	<a href='' class='noti-logo'>
+            <i class="fa-solid fa-bell fa-xl" style="color: #006370;"></i> &nbsp;Thông báo
+            </a>
+            <a href='' class='noti-logo'>
+            <i class="fa-solid fa-bag-shopping fa-xl" style="color: #006370;"></i>&nbsp; Giỏ hàng của bạn (0) sản phẩm
+            </a>
+        </div>
+    </div>
+    <div class='sub-head'>
+            <ul class='menu-sub-head'>
+                <li><a href="/Storefront"><i class="fa-solid fa-house" style="color: #32373e;"></i>&nbsp; Trang Chủ</a></li>
+                <li><a href=''>>></a></li>
+                <li><a href='/Storefront/Monitors'>Màn hình máy tính</a></li>
+            </ul>
+    </div>
+    <div class='product'>
+    	<div class='product-left'>
+        	<div id='th'>
+                <p><b>Thương hiệu</b></p>
+                <input type='checkbox' id='a' name='a' value='a' />
+                <label for='a'>ACER</label><br />
+                <input type='checkbox' id='a1' name='a1' value='a1' />
+                <label for='a1'>AOC</label><br />
+                <input type='checkbox' id='a2' name='a2' value='a2' />
+                <label for='a2'>ASUS</label><br />
+                <input type='checkbox' id='a3' name='a3' value='a3' />
+                <label for='a3'>DELL</label><br />
+                <input type='checkbox' id='a4' name='a4' value='a4' />
+                <label for='a4'>GIGABYTE</label><br />
+                <input type='checkbox' id='a5' name='a5' value='a5' />
+                <label for='a5'>Huawei</label><br />
+                <input type='checkbox' id='a6' name='a6' value='a6' />
+                <label for='a6'>LG</label><br />
+                <input type='checkbox' id='a7' name='a7' value='a7' />
+                <label for='a7'>MSI</label><br />
+                <input type='checkbox' id='a8' name='a8' value='a8' />
+                <label for='a8'>SAMSUNG</label><br />
+                <input type='checkbox' id='a9' name='a9' value='a9' />
+                <label for='a9'>PHILIPS</label><br />
+                <input type='checkbox' id='a10' name='a10' value='a10' />
+                <label for='a10'>Lenovo</label><br />
+            </div>
+            <div id='kt'>
+            	<p><b>Kích thước màn hình</b></p>
+                <input type='checkbox' id='b' name='b' value='b' />
+                <label for='b'>14"</label><br />
+                <input type='checkbox' id='b1' name='b1' value='b1' />
+                <label for='b1'>15.6"</label><br />
+                <input type='checkbox' id='b2' name='b2' value='b2' />
+                <label for='b2'>18.5"</label><br />
+                <input type='checkbox' id='b3' name='a3' value='b3' />
+                <label for='b3'>19"</label><br />
+                <input type='checkbox' id='b4' name='a4' value='b4' />
+                <label for='b4'>20"</label><br />
+                <input type='checkbox' id='b5' name='a5' value='b5' />
+                <label for='b5'>21.5"</label><br />
+                <input type='checkbox' id='b6' name='a6' value='b6' />
+                <label for='b6'>22"</label><br />
+                <input type='checkbox' id='b7' name='b7' value='b7' />
+                <label for='b7'>24"</label><br />
+                <input type='checkbox' id='b9' name='b9' value='b9' />
+                <label for='b9'>24.5"</label><br />
+                <input type='checkbox' id='b11' name='b11' value='11' />
+                <label for='b11'>25"</label><br />
+                <input type='checkbox' id='b12' name='b12' value='b12' />
+                <label for='b12'>27"</label><br />
+                <input type='checkbox' id='b13' name='b13' value='b13' />
+                <label for='b13'>28"</label><br />
+                <input type='checkbox' id='b14' name='b14' value='b14' />
+                <label for='b14'>29"</label><br />
+                <input type='checkbox' id='b15' name='b15' value='b15' />
+                <label for='b15'>30"</label><br />
+                <input type='checkbox' id='b16' name='b16' value='b16' />
+                <label for='b16'>31.5"</label><br />
+                <input type='checkbox' id='b17' name='b17' value='b17' />
+                <label for='b17'>32"</label><br />
+            </div>
+            <div id='dpg'>
+            	<p><b>Độ phân giải</b></p>
+                <input type='checkbox' id='c' name='c' value='c' />
+                <label for='c'>1366 x 768</label><br />
+                <input type='checkbox' id='c1' name='c1' value='c1' />
+                <label for='c1'>1440 x 900</label><br />
+                <input type='checkbox' id='c2' name='c2' value='c2' />
+                <label for='c2'>1600 x 900</label><br />
+                <input type='checkbox' id='c3' name='c3' value='c3' />
+                <label for='c3'>1920 x 1080</label><br />
+                <input type='checkbox' id='c4' name='c4' value='c4' />
+                <label for='c4'>1920 x 1200</label><br />
+                <input type='checkbox' id='c5' name='c5' value='c5' />
+                <label for='c5'>2560 x 1080</label><br />
+                <input type='checkbox' id='c6' name='c6' value='c6' />
+                <label for='c6'>2560 x 1440</label><br />
+                <input type='checkbox' id='c7' name='c7' value='c7' />
+                <label for='c7'>2560 x 1600</label><br />
+                <input type='checkbox' id='c9' name='c9' value='c9' />
+                <label for='c9'>2560 x 2880</label><br />
+                <input type='checkbox' id='c11' name='c11' value='c11' />
+                <label for='c11'>3440 x 1440</label><br />
+                <input type='checkbox' id='c12' name='c12' value='c12' />
+                <label for='c12'>3840 x 1600</label><br />
+            </div>
+            <div id='tn'>
+            	<p><b>Tấm nền</b></p>
+                <input type='checkbox' id='d' name='d' value='d' />
+                <label for='d'>Fast IPS</label><br />
+                <input type='checkbox' id='d1' name='d1' value='d1' />
+                <label for='d1'>IPS</label><br />
+                <input type='checkbox' id='d2' name='d2' value='d2' />
+                <label for='d2'>MVA</label><br />
+                <input type='checkbox' id='d3' name='d3' value='d3' />
+                <label for='d3'>Nano IPS</label><br />
+                <input type='checkbox' id='d4' name='d4' value='d4' />
+                <label for='d4'>OLED</label><br />
+                <input type='checkbox' id='d5' name='d5' value='d5' />
+                <label for='d5'>PLS</label><br />
+                <input type='checkbox' id='d6' name='d6' value='d6' />
+                <label for='d6'>RAPID IPS</label><br />
+                <input type='checkbox' id='d7' name='d7' value='d7' />
+                <label for='d7'>TN</label><br />
+                <input type='checkbox' id='a9' name='a9' value='a9' />
+                <label for='d9'>VA</label><br />
+            </div>
+        </div>
+        <div class='product-right'>
+            <table class='table' >
+                <tr class='tr'>
+                    <td class='td'>
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp1.jpg" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn hình máy tính Tomko 27 inch 2K IPS <br />75Hz T2721F-2K</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: T2721F-2K</a>
+                          <h3 >4.170.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>5.000.000đ</del></span>
+                          </h3>
+                         
+                          <a ><i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp2.jpg" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn máy tính Tomko cong 38 inch GX389Q</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: GX389Q</a>
+                          <h3 >26.170.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>27.000.000đ</del></span></h3> 
+                          <a ><i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                        
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp6.jpg" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn hình máy tính Tomko 27 inch 2K IPS</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: B2721F-2K</a>
+                          <h3 >5.100.000<ins>đ</ins></h3>
+                          <a ><i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                        
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp4.jpg"	 class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn máy tính 27″Tomko T2721Q</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: T2721FC</a>
+                          <h3 >4.500.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>5.000.000đ</del></span></h3>
+                           <a>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #c7c7c7;"></i>
+                          </a>
+                        </div>
+                    </td>
+                 </tr>
+                 <tr class='tr'>
+                    <td class='td' >
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp3.jfif" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn hình máy tính Tomko 24 inch 144Hz IPS<br /> GX241F</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: GX241F</a>
+                          <h3 >5.000.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>5.500.000đ</del></span></h3>
+                          <a ><i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                         <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp10.jfif" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn máy tính Tomko 24″ T2421F</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: T2421F</a>
+                          <h3 >2.670.000<ins>đ</ins></h3>
+                          <a ><i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp7.jpg" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn hình máy tính Tomko 21.5 inch FULL HD</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: C2721F-2K</a>
+                          <h3 >1.900.000<ins>đ</ins> <span style="font-size: 80%;margin-left: 10px;color: black;"><del>2.000.000đ</del></span></h3>
+                          <a>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #c7c7c7;"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp8.png" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn Hình Máy Tính Gaming 27 inch ATAS</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: T1721BC</a>
+                          <h3 >5.500.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>6.000.000đ</del></span></h3>
+                          <a ><i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          </a>
+                        </div>
+                    </td>
+                 </tr>
+                 <tr class='tr'>
+                    <td class='td' >
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp9.jpg" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn hình máy tính ATAS 27 inch 2K</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: T1220F-2K</a>
+                          <h3 >6.170.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>7.000.000đ</del></span></h3>
+                          <a ><i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp5.jpg" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn máy tính ATAS không viền 27 inch</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: TX389Q</a>
+                          <h3 >7.170.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>8.000.000đ</del></span></h3>
+                          <a>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #c7c7c7;"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp12.jpg" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn hình máy tính Tomko 27 inch 75HZ</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: C2721F-2k</a>
+                          <h3 >3.100.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>3.900.000đ</del></span></h3>
+                              <a>
+                              <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                              <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                              <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                              <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                              <i class="fa-solid fa-star fa-xl" style="color: #c7c7c7;"></i>
+                              </a>
+                        </div>
+                    </td>
+                    <td class='td' >
+                        <div class='top'>
+                          <a href='/Storefront/ProductDetails'>
+                            <img src="/images/products/general/sp111.jfif" class='img' />
+                          </a><br />
+                          <a href='/Storefront/ProductDetails' class='buy'>Mua ngay</a>
+                        </div>
+                        <div class='info'>
+                          <a href='/Storefront/ProductDetails' class='text'>Màn hình máy tính 27 inch 2K ATAS MD270B</a><br />
+                          <a href='/Storefront/ProductDetails' class='text'>Mã: MD270B</a>
+                          <h3 >4.190.000<ins>đ</ins><span style="font-size: 80%;margin-left: 10px;color: black;"><del>5.000.000đ</del></span></h3>
+                          <a ><i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          <i class="fa-solid fa-star fa-xl" style="color: #cfdc1e;"></i>
+                          </a>
+                        </div>
+                    </td>
+                 </tr>
+            </table>
+        </div>
+    </div>
+</div>

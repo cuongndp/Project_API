@@ -77,12 +77,8 @@ namespace Business.Services
                             session.IsRevoked = true;
                         }
 
-                        var authClaim = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name,user.Name),
-                            new Claim(ClaimTypes.NameIdentifier,user.ID.ToString())
-                        };
-                        var token = _tokenServices.GenerateAccessToken(authClaim);
+
+                       
                         var refreshToken = _tokenServices.GenerateRefreshToken();
                         var day = Convert.ToInt32(_configuration["jwt:RefreshTokenValidityInDays"]);
                         var expiryDate = DateTime.UtcNow.AddDays(day);
@@ -92,14 +88,23 @@ namespace Business.Services
                             CreateDate = DateTime.UtcNow,
                             ExpiryDate = expiryDate,
                             UserID = user.ID,
-                            CreatedByIp=request_Login.CreatedByIp,
+                            CreatedByIp = request_Login.CreatedByIp,
                             UserAgent = request_Login.UserAgent,
                             DeviceID = request_Login.DeviceID
-                            
+
 
                         };
-                          await _context.dh_UserSession.AddAsync(newUser);
+                        await _context.dh_UserSession.AddAsync(newUser);
                         await _context.SaveChangesAsync();
+
+                        
+                        var authClaim = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name,user.Name),
+                            new Claim(ClaimTypes.NameIdentifier,user.ID.ToString()),
+                            new Claim("SessionId",newUser.ID.ToString())
+                        };
+                        var token = _tokenServices.GenerateAccessToken(authClaim);
                         var refreshTokenOptions = new CookieOptions
                         {
                             HttpOnly = true,

@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    ViewData["PageStyles"] = new[] { "css/storefront/chitiet_sp.css" };
+}
+
+<div class='main' data-product-detail>
+    <div class='head legacy-toolbar'>
+        <div class='danhsach'>
+            <div class='ds'>
+                <a href=''>
+                    <i class="fa-solid fa-list" style="color: #004880;"></i>
+                    Danh sách sản phẩm
+                </a>
+                <ul class="menu_list_1">
+                    <li><a href="/Storefront/Monitors" target="_blank"> Màn hình máy tính</a></li>
+                    <li><a href="/Storefront/Headphones" target="_blank"> Tai nghe</a></li>
+                    <li><a href="/Storefront/Mice" target="_blank">Chuột máy tính</a></li>
+                    <li><a href="/Storefront/Keyboards" target="_blank">Bàn phím</a></li>
+                    <li><a href="/Storefront/OfficePcs" target="_blank">PC Văn Phòng</a></li>
+                    <li><a href="" target="_blank">USB</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class='find'>
+            <input type='text' placeholder="Nhập sản phầm cần tìm" size='70' />
+            <a href='' id='find'>
+                <img src="/images/icons/find.png" />
+            </a>
+        </div>
+        <div class='noti'>
+            <a href='' class='noti-logo'>
+                <i class="fa-solid fa-bell fa-xl" style="color: #006370;"></i> &nbsp;Thông báo
+            </a>
+            <a href='' class='noti-logo'>
+                <i class="fa-solid fa-bag-shopping fa-xl" style="color: #006370;"></i>&nbsp; Giỏ hàng của bạn (0) sản phẩm
+            </a>
+        </div>
+    </div>
+
+    <div class='sub-head'>
+        <ul class='menu-sub-head'>
+            <li><a href="/Storefront"><i class="fa-solid fa-house" style="color: #32373e;"></i>&nbsp; Trang Chủ</a></li>
+            <li><a href=''>></a></li>
+            <li id='detail-breadcrumb'>Đang tải...</li>
+        </ul>
+    </div>
+
+    <div class='product-left'>
+        <div class='anh' id='product-gallery'></div>
+        <div class='chitiet_sp' id='product-detail-info'></div>
+        <div class='mota_sp' id='product-description'></div>
+    </div>
+
+    <div class="product-right">
+        <div class="khung">
+            <img src="/images/branding/Logo_PV.jpg" />
+            <span style="float:right;font-size:90%;"><b>CÔNG TY CỔ PHẦN THƯƠNG<br /> MẠI DỊCH VỤ PHÚC CƯỜNG </b><i class="fa-sharp fa-solid fa-circle-check" style="color: #00f03c;"> </i></span>
+            <div class='text'>
+                <a><b>Chính sách bán hàng</b></a>
+                <a><i class="fa-sharp fa-solid fa-truck-fast" style="color: #f10909;"></i> &nbsp; Miễn phí giao hàng cho đơn hàng từ 5 triệu </a>
+                <a><i class="fa-solid fa-check-to-slot" style="color: #ff0000;"></i>&nbsp; Cam kết hàng chính hãng 100% </a>
+                <a><i class="fa-sharp fa-solid fa-right-left" style="color: #f00000;"></i> &nbsp; Đổi trả trong vòng 10 ngày </a>
+            </div>
+        </div>
+    </div>
+
+    <div class='product-else' id='related-products'></div>
+
+    <div class='cmt'>
+        <h3>Bình luận</h3>
+        <input type="text" placeholder="Mời bạn nhập bình luận hoặc câu hỏi" size="80" style="border-radius: 3px; height: 70px;"/>
+    </div>
+</div>
