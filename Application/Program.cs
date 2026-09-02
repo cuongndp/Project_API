@@ -6,7 +6,9 @@ using DataAccess.Models;
 using DataAccess.netCore.Dapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,45 +36,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         OnTokenValidated = async context =>
         {
-            var db = context.HttpContext
+            var cache = context.HttpContext
                 .RequestServices
-                .GetRequiredService<Models_Context>(); /// l?y models_Context g�n d� bi?n _contexxt c� s? d?ng
+                .GetRequiredService<IDistributedCache>(); /// lấy cache dùng 
 
             var sessionId = context.Principal?
                 .FindFirst("SessionId")?         //t�m sessionID trong claim
                 .Value;
+            var ID = context.Principal?
+                .FindFirst(ClaimTypes.NameIdentifier)?         //t�m sessionID trong claim
+                .Value;
 
-            //if (!int.TryParse(sessionId, out int id))
-            //{
-            //    context.Fail("Invalid session");                      
-            //    return;
-            //}
+            var TokenKey = $"user:{ID}:active_session";
 
-            //chuy?n session th�nh int
-
-            var id= Convert.ToInt32 (sessionId);
-
-            var session = await db.dh_UserSession
-                .AsNoTracking()   // n� ch? l?y d? li?u ?? ??c 
-                .FirstOrDefaultAsync(x => x.ID == id);
-
-            if (session == null)
+            var redisSessionId = await cache.GetStringAsync(TokenKey);
+            
+            if(redisSessionId !=sessionId)
             {
-                context.Fail("Session not found");
+                context.Fail("Session không hợp lệ");
                 return;
-            }
+            }    
 
-            if (session.IsRevoked)
-            {
-                context.Fail("Session revoked");
-                return;
-            }
 
-            if (session.ExpiryDate <= DateTime.UtcNow)
-            {
-                context.Fail("Session expired");
-                return;
-            }
+            
         }
     };
 });

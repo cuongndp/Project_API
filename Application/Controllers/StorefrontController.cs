@@ -32,6 +32,12 @@ public class StorefrontController : Microsoft.AspNetCore.Mvc.Controller
     public IActionResult ProductDetails(int? id) => View();
 
     [HttpGet]
+    public IActionResult Cart() => View();
+
+    [HttpGet]
+    public IActionResult Checkout() => View();
+
+    [HttpGet]
     public IActionResult Register() => View();
 
     [HttpGet]

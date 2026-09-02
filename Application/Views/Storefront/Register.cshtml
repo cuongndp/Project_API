@@ -22,23 +22,26 @@
                         </div>
                         <p class="auth-sgt">or use your email for registration:</p>
                     </div>
-                    <form class="login-form">
-                        <input type="text" class="auth-form-input" placeholder="Name">
-                        <input type="email" class="auth-form-input" placeholder="Email">
+                    <form class="login-form" data-register-form>
+                        <input type="text" name="name" class="auth-form-input" placeholder="Tên đăng nhập" autocomplete="username" required>
+                        <input type="text" name="fullName" class="auth-form-input" placeholder="Họ và tên" autocomplete="name" required>
+                        <input type="email" name="email" class="auth-form-input" placeholder="Email" autocomplete="email" required>
                         <div class="input-icon">
-                            <input type="password" class="auth-form-input" placeholder="Password">
+                            <input type="password" name="password" class="auth-form-input" placeholder="Mật khẩu" autocomplete="new-password" minlength="6" required>
                             <i class="fa fa-eye show-password"></i>
                         </div>
-                        <input type="password" class="auth-form-input" placeholder="Confirm Password">
+                        <input type="password" name="confirmPassword" class="auth-form-input" placeholder="Xác nhận mật khẩu" autocomplete="new-password" minlength="6" required>
+                        <input type="text" name="address" class="auth-form-input" placeholder="Địa chỉ" autocomplete="street-address" required>
                         <label class="btn active">
                             <input type="checkbox" name='email1' checked>
                             <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i> 
                             <span> Tôi đồng ý với <a href="#">Điều Khoản</a> và <a href="#">Chính Sách</a>.</span>
                         </label>
                         <div class="footer-action">
-                            <input type="submit" value="Đăng Kí" class="auth-submit">
+                            <input type="submit" value="Đăng Kí" class="auth-submit" data-register-submit>
                             <a href="/Storefront/Login" class="auth-btn-direct">Đăng Nhập</a>
                         </div>
+                        <p data-register-message role="status" aria-live="polite"></p>
                     </form>
                 </div>
             </div>

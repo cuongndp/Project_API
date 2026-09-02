@@ -1,7 +1,10 @@
-﻿namespace DataAccess.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DataAccess.Models
 {
     public class dh_Attribute
     {
+        [Key]
         public int AttributeID { get; set; }
 
         public int GroupID { get; set; }

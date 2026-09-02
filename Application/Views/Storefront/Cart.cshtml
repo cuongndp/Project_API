@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    ViewData["PageStyles"] = new[] { "css/storefront/cart.css" };
+}
+
+<section class="cart-page" data-cart-page>
+    <div class="cart-page__header">
+        <a asp-controller="Storefront" asp-action="Index">Trang chủ</a>
+        <h1>Giỏ hàng của bạn</h1>
+    </div>
+    <div class="cart-page__select-all">
+        <label><input type="checkbox" data-cart-select-all /> Chọn tất cả</label>
+        <span data-cart-selected>0 sản phẩm được chọn</span>
+    </div>
+    <div class="cart-page__list" data-cart-list>
+        <p>Đang tải giỏ hàng...</p>
+    </div>
+    <div class="cart-page__summary">
+        <div>
+            <span>Tổng thanh toán</span>
+            <strong data-cart-total>0đ</strong>
+        </div>
+        <button type="button" data-cart-checkout>Mua hàng</button>
+    </div>
+</section>

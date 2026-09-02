@@ -471,6 +471,56 @@ nav ul li:nth-child(9):hover a{
     font-size: 20px;
 }
 
+.storefront-cart-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border: 1px solid #dce8ed;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0, 70, 90, 0.08);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.storefront-cart-link:hover {
+    border-color: #00a8bd;
+    box-shadow: 0 5px 14px rgba(0, 70, 90, 0.14);
+    transform: translateY(-1px);
+}
+
+.storefront-cart-icon {
+    position: relative;
+    display: inline-flex;
+}
+
+.storefront-cart-link .storefront-cart-icon i {
+    margin: 0;
+    color: #006370;
+    font-size: 28px;
+}
+
+.storefront-cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border: 2px solid #fff;
+    border-radius: 999px;
+    background: #f45132;
+    color: #fff;
+    font-size: 11px;
+    line-height: 16px;
+    text-align: center;
+}
+
+.storefront-cart-link small {
+    color: #929292;
+    font-size: 13px;
+}
+
 .storefront-toolbar__actions i {
     margin-right: 8px;
     color: #006370;
@@ -498,6 +548,10 @@ nav ul li:nth-child(9):hover a{
 
     .storefront-toolbar__actions a {
         font-size: 14px;
+    }
+
+    .storefront-cart-link {
+        padding: 6px 8px;
     }
 
     .storefront-toolbar__actions i {

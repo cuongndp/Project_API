@@ -1,7 +1,10 @@
-﻿namespace DataAccess.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DataAccess.Models
 {
     public class dh_ProductImage
     {
+        [Key]
         public int ProductImageID { get; set; }
 
         public int? ProductID { get; set; }

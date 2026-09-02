@@ -1,6 +1,7 @@
 ﻿using Business.IServices;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Security.Claims;
 
 namespace Business.Services
@@ -11,13 +12,15 @@ namespace Business.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ITokenServices _tokenServices;
         private IConfiguration _configuration;
+        public IDistributedCache _cache;
 
-        public Jwt_Refresh(Models_Context context , ITokenServices tokenServices, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public Jwt_Refresh(IDistributedCache cache,Models_Context context , ITokenServices tokenServices, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _tokenServices = tokenServices;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
+            _cache = cache;
         }
 
         public async Task<string> Refresh_Token(Request_Refresh request)
@@ -45,9 +48,26 @@ namespace Business.Services
                 var authClaim = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name,user.Name),
-                            new Claim(ClaimTypes.NameIdentifier,user.ID.ToString())
+                            new Claim(ClaimTypes.NameIdentifier,user.ID.ToString()),
+                            new Claim("SessionId",checkToken.SessionId)
                         };
                 var token = _tokenServices.GenerateAccessToken(authClaim);
+                // bắt đầu tạo key và lưu token vào redis
+
+                var TokenKey = $"user:{user.ID}:active_session";
+                var cacheData = await _cache.GetStringAsync(TokenKey);
+
+                //nếu có xóa cái token cũ và tạo cái mới cho thiết bị mới đó
+                //if(!string.IsNullOrEmpty(cacheData))
+                //{
+                //    await _cache.RemoveAsync(TokenKey);
+                //}    
+
+
+                await _cache.SetStringAsync(TokenKey, checkToken.SessionId, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Convert.ToInt32(_configuration["Jwt:TokenValidityInMinutes"]))
+                });
                 var refreshToken = _tokenServices.GenerateRefreshToken();
                 var day = Convert.ToInt32(_configuration["jwt:RefreshTokenValidityInDays"]);
                 var expiryDate = DateTime.UtcNow.AddDays(day);
@@ -59,7 +79,8 @@ namespace Business.Services
                     UserID = user.ID,
                     CreatedByIp = request.CreatedByIp,
                     UserAgent = request.UserAgent,
-                    DeviceID = request.DeviceID
+                    DeviceID = request.DeviceID,
+                    SessionId=checkToken.SessionId
 
 
                 };

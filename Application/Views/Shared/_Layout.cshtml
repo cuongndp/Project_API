@@ -26,12 +26,12 @@
                     <li><a class="storefront-brand" asp-controller="Storefront" asp-action="Index">PHÚC CƯỜNG</a></li>
                     <li id="adres-form"><button type="button">Xem giá, tồn kho tại:<br />Hồ Chí Minh <i class="fa-solid fa-sort-down"></i></button></li>
                     <li class="storefront-search"><input type="search" placeholder="Bạn muốn tìm gì" aria-label="Tìm kiếm" /><i class="fa-solid fa-magnifying-glass"></i></li>
-                    <li><a asp-controller="Storefront" asp-action="Monitors"><button type="button"><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng</button></a></li>
+                    <li><a asp-controller="Storefront" asp-action="Cart"><button type="button"><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng</button></a></li>
                     <li><a asp-controller="Storefront" asp-action="Monitors">Lịch sử<br />đơn hàng</a></li>
                     <li><a asp-controller="Storefront" asp-action="Monitors">Thẻ nạp ngay</a></li>
                     <li><a asp-controller="Storefront" asp-action="Monitors">24h Công Nghệ</a></li>
                     <li><a asp-controller="Storefront" asp-action="Register">ĐĂNG KÍ</a></li>
-                    <li><a asp-controller="Storefront" asp-action="Login">ĐĂNG NHẬP</a></li>
+                    <li><a asp-controller="Storefront" asp-action="Login" data-auth-user>ĐĂNG NHẬP</a></li>
                     <li class="adres-form">
                         <div class="adress-form-content">
                             <h2>Chọn địa chỉ nhận hàng <button id="adress-close" type="button">Đóng</button></h2>
@@ -73,7 +73,10 @@
             </div>
             <div class="storefront-toolbar__actions">
                 <a href="#"><i class="fa-solid fa-bell"></i> Thông báo</a>
-                <a asp-controller="Storefront" asp-action="Monitors"><i class="fa-solid fa-bag-shopping"></i> Giỏ hàng của bạn (0) sản phẩm</a>
+                <a class="storefront-cart-link" asp-controller="Storefront" asp-action="Cart">
+                    <span class="storefront-cart-icon"><i class="fa-solid fa-bag-shopping"></i><span class="storefront-cart-badge" data-cart-count>0</span></span>
+                    <span>Giỏ hàng của bạn <small>(<span data-cart-count>0</span> loại)</small></span>
+                </a>
             </div>
         </section>
     }

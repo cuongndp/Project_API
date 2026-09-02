@@ -12,21 +12,19 @@
         <div class="noi-dung">
             <div class="form">
                 <h2>Trang Đăng Nhập</h2>
-                <form action="">
+                <form action="" data-login-form>
                     <div class="input-form">
-                        <span>Tên Người Dùng</span>
-                        <input type="text" name="">
+                        <span>Email</span>
+                        <input type="email" name="email" autocomplete="email" required>
                     </div>
                     <div class="input-form">
                         <span>Mật Khẩu</span>
-                        <input type="password" name="">
-                    </div>
-                    <div class="nho-dang-nhap">
-                        <label><input type="checkbox" name=""> Nhớ Đăng Nhập</label>
+                        <input type="password" name="password" autocomplete="current-password" required>
                     </div>
                     <div class="input-form">
-                        <input type="submit" value="Đăng Nhập">
+                        <input type="submit" value="Đăng Nhập" data-login-submit>
                     </div>
+                    <p data-login-message role="status" aria-live="polite"></p>
                     <div class="input-form">
                         <p>Bạn Chưa Có Tài Khoản? <a href="/Storefront/Register">Đăng Ký</a></p>
                     </div>

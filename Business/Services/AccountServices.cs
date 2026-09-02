@@ -2,9 +2,11 @@
 using DataAccess.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Security.Cryptography.Xml;
+using System.Text.Json;
 namespace Business.Services
 {
     public class AccountServices : IAccountServices
@@ -13,12 +15,15 @@ namespace Business.Services
         private ITokenServices _tokenServices;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private IConfiguration _configuration;
-        public AccountServices(Models_Context context, ITokenServices tokenServices, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) 
+        public IDistributedCache _cache;
+        public AccountServices(IDistributedCache cache,Models_Context context, ITokenServices tokenServices, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) 
         {
             _context = context;
             _tokenServices = tokenServices;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
+            _cache = cache;
+
         }
         public async Task<Return_request> Regiter(Request_dh_User request)
         {
@@ -39,11 +44,20 @@ namespace Business.Services
                         Password = hashPass, 
                         Name = request.Name, 
                         FullName = request.FullName, 
-                        Address = request.Address
+                        Address = request.Address,
+                        CreatedAt = DateTime.UtcNow,
+
                         
                     };
                     _context.dh_User.Add(newUser);
                    await _context.SaveChangesAsync();
+                    var newCart = new dh_Cart
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        UserID = newUser.ID,
+                    };
+                    _context.dh_Cart.Add(newCart);
+                    await _context.SaveChangesAsync();
                     return new Return_request
                     {
                         Seccess = true,
@@ -82,6 +96,7 @@ namespace Business.Services
                         var refreshToken = _tokenServices.GenerateRefreshToken();
                         var day = Convert.ToInt32(_configuration["jwt:RefreshTokenValidityInDays"]);
                         var expiryDate = DateTime.UtcNow.AddDays(day);
+                        string currentSessionGuid = Guid.NewGuid().ToString();
                         var newUser = new dh_UserSession
                         {
                             RefreshToken = refreshToken,
@@ -90,21 +105,38 @@ namespace Business.Services
                             UserID = user.ID,
                             CreatedByIp = request_Login.CreatedByIp,
                             UserAgent = request_Login.UserAgent,
-                            DeviceID = request_Login.DeviceID
-
+                            DeviceID = request_Login.DeviceID,
+                            SessionId= currentSessionGuid
 
                         };
                         await _context.dh_UserSession.AddAsync(newUser);
                         await _context.SaveChangesAsync();
 
-                        
+                       
                         var authClaim = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name,user.Name),
                             new Claim(ClaimTypes.NameIdentifier,user.ID.ToString()),
-                            new Claim("SessionId",newUser.ID.ToString())
+                            new Claim("SessionId",currentSessionGuid)
                         };
                         var token = _tokenServices.GenerateAccessToken(authClaim);
+
+                        // bắt đầu tạo key và lưu token vào redis
+
+                        var TokenKey = $"user:{user.ID}:active_session";
+                        var cacheData = await _cache.GetStringAsync(TokenKey);
+
+                        //nếu có xóa cái token cũ và tạo cái mới cho thiết bị mới đó
+                        //if(!string.IsNullOrEmpty(cacheData))
+                        //{
+                        //    await _cache.RemoveAsync(TokenKey);
+                        //}    
+
+                        
+                        await _cache.SetStringAsync(TokenKey, currentSessionGuid, new DistributedCacheEntryOptions
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Convert.ToInt32(_configuration["Jwt:TokenValidityInMinutes"]))
+                        });
                         var refreshTokenOptions = new CookieOptions
                         {
                             HttpOnly = true,
@@ -153,6 +185,12 @@ namespace Business.Services
             {
                 session.IsRevoked = true;
                 _context.dh_UserSession.Update(session);
+                var TokenKey = $"user:{session.UserID}:active_session";
+
+                
+                
+                  await  _cache.RemoveAsync(TokenKey);
+                
                 await _context.SaveChangesAsync();
             } 
                 

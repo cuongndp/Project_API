@@ -1,0 +1,138 @@
+.cart-page {
+    width: min(1000px, calc(100% - 32px));
+    margin: 36px auto 80px;
+}
+
+.cart-page__header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    border-bottom: 2px solid #0cc;
+    padding-bottom: 16px;
+}
+
+.cart-page__header a {
+    color: #06c;
+}
+
+.cart-page__header h1 {
+    color: #222;
+    font-size: 28px;
+}
+
+.cart-page__list {
+    margin-top: 24px;
+}
+
+.cart-page__select-all {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    color: #555;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 22px 100px 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-item__check {
+    width: 18px;
+    height: 18px;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.cart-item h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+}
+
+.cart-item p {
+    margin: 4px 0;
+    color: #666;
+}
+
+.cart-item__quantity {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.cart-item__quantity button {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+}
+
+.cart-item > strong,
+.cart-page__summary strong {
+    color: #a00;
+    white-space: nowrap;
+}
+
+.cart-page__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding-top: 24px;
+    font-size: 20px;
+}
+
+.cart-page__summary div {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.cart-page__summary button {
+    min-width: 150px;
+    padding: 12px 24px;
+    border: 0;
+    background: #f45132;
+    color: #fff;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .cart-page__header {
+        display: block;
+    }
+
+    .cart-page__header h1 {
+        font-size: 24px;
+    }
+
+    .cart-item {
+        grid-template-columns: 22px 72px 1fr;
+        gap: 12px;
+    }
+
+    .cart-item img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .cart-item > strong {
+        grid-column: 3;
+    }
+
+    .cart-page__summary,
+    .cart-page__summary div {
+        align-items: flex-end;
+        flex-direction: column;
+        gap: 12px;
+    }
+}

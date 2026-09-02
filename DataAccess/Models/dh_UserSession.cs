@@ -17,6 +17,7 @@ namespace DataAccess.Models
         public string?  ReplacedByToken            {get;set;}
           public string?  RevokedByIp                {get;set;}
           public string? ReasonForRevocation        {get;set;}
+        public string SessionId {get;set;}
     }
     
     

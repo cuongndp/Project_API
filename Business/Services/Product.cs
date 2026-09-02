@@ -78,5 +78,70 @@ namespace Business.Services
     
             return product;
         }
+        public async Task<Return_request> AddCartItem(Request_CartItem request, int id)
+        {
+            var product = await _context.dh_Product.FirstOrDefaultAsync(x => x.ProductID == request.ProductID);
+
+            if (product == null)
+            {
+                return new Return_request()
+                {
+                    Seccess = false,
+                    Message = "Không tìm thấy sản phẩm"
+                };
+            }
+            if (request.Quantity <= 0)
+            {
+                return new Return_request()
+                {
+                    Seccess = false,
+                    Message = "Số lượng phải lớn hơn 0"
+                };
+            }
+            var cart = await _context.dh_Cart.FirstOrDefaultAsync(x => x.UserID == id);
+            if (cart == null) return new Return_request()
+            {
+                Seccess = false,
+                Message = "Không tìm thấy giỏ hàng"
+            };
+            var cartItem= await _context.dh_CartItem.FirstOrDefaultAsync(x=>x.CartID == cart.CartID && x.ProductID==request.ProductID);
+            if (cartItem != null)
+            {
+
+                cartItem.Quantity += request.Quantity;
+                cartItem.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+                return new Return_request()
+                {
+
+                    Seccess = true,
+                    Message = "Cập nhật giỏ hàng thành công"
+                };
+            }
+            var newCartItem = new dh_CartItem
+            {
+                CartID = cart.CartID,
+                ProductID = request.ProductID,
+                Quantity = request.Quantity,
+                CreatedAt = DateTime.UtcNow
+            };
+             _context.dh_CartItem.Add(newCartItem);
+            await _context.SaveChangesAsync();
+            return new Return_request()
+            {
+                Seccess = true,
+                Message = "Sản phẩm đã thêm vào giỏ hàng"
+            };
+        }
+        public async Task<List<CartItemViewModel>> GetCartItem(int id)
+        {
+            var cartID= await _context.dh_Cart.FirstOrDefaultAsync(x=>x.UserID==id);
+            var paramater = new DynamicParameters();
+            paramater.Add("@CartID", cartID.CartID);
+            var cartItemData = await connection.QueryAsync<CartItemViewModel>("SP_Cart_GetCartItem", paramater);
+
+            return cartItemData;
+        }
     }
 }

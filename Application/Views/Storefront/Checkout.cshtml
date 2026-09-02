@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Thanh toán";
+    ViewData["PageStyles"] = new[] { "css/storefront/cart.css" };
+}
+
+<section class="cart-page" data-checkout-page>
+    <div class="cart-page__header">
+        <a asp-controller="Storefront" asp-action="Cart">Quay lại giỏ hàng</a>
+        <h1>Thanh toán</h1>
+    </div>
+    <div class="cart-page__list" data-checkout-list>
+        <p>Đang tải đơn hàng...</p>
+    </div>
+    <div class="cart-page__summary">
+        <div>
+            <span>Tổng thanh toán</span>
+            <strong data-checkout-total>0đ</strong>
+        </div>
+        <button type="button" data-place-order>Đặt hàng</button>
+    </div>
+</section>

@@ -15,5 +15,10 @@ namespace DataAccess.Models
         public DbSet<dh_Attribute> dh_Attribute { get; set; }
         public DbSet<dh_AttributeGroup> dh_AttributeGroup { get; set; } 
         public DbSet<dh_ProductAttribute>  dh_ProductAttribute { get; set; }
+        public DbSet<dh_Cart> dh_Cart { get; set; }
+        public DbSet<dh_CartItem> dh_CartItem { get; set; }
+        public DbSet<dh_Order> dh_Order { get; set; }
+        public DbSet<dh_OrderItem> dh_OrderItem { get; set; }
+
     }
 }

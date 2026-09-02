@@ -1,7 +1,10 @@
-﻿namespace DataAccess.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DataAccess.Models
 {
     public class dh_ProductCategory
     {
+        [Key]
         public int CateID { get; set; }
 
         public string? Name { get; set; }
