@@ -1,3 +1,5 @@
+@model DataAccess.Models.CheckoutPreviewResponse
+
 @{
     ViewData["Title"] = "Thanh toán";
     ViewData["PageStyles"] = new[] { "css/storefront/cart.css" };
@@ -8,14 +10,66 @@
         <a asp-controller="Storefront" asp-action="Cart">Quay lại giỏ hàng</a>
         <h1>Thanh toán</h1>
     </div>
+    <section class="checkout-address" data-checkout-address>
+        <div class="checkout-address__heading">
+            <div>
+                <span class="checkout-address__label">Địa chỉ nhận hàng</span>
+                <p data-selected-address>Chưa chọn địa chỉ nhận hàng.</p>
+            </div>
+            <button type="button" class="checkout-address__change" data-open-addresses>Thay đổi</button>
+        </div>
+    </section>
     <div class="cart-page__list" data-checkout-list>
-        <p>Đang tải đơn hàng...</p>
+        @if (Model?.Items?.Count > 0)
+        {
+            <div data-checkout-server-preview>
+                @foreach (var item in Model.Items)
+                {
+                    <article class="cart-item">
+                        <img src="@(item.Image ?? "/images/branding/AnhDau.PNG")" alt="@item.ProductName" />
+                        <div class="cart-item__info">
+                            <h2>@item.ProductName</h2>
+                            <p>Số lượng: @item.Quantity</p>
+                            <p>Đơn giá: @item.UnitPrice.ToString("N0")đ</p>
+                        </div>
+                        <strong>@item.TotalPrice.ToString("N0")đ</strong>
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <p>Đang tải đơn hàng...</p>
+        }
     </div>
     <div class="cart-page__summary">
         <div>
             <span>Tổng thanh toán</span>
-            <strong data-checkout-total>0đ</strong>
+            <strong data-checkout-total>@(Model?.TotalAmount.ToString("N0") ?? "0")đ</strong>
         </div>
         <button type="button" data-place-order>Đặt hàng</button>
     </div>
 </section>
+
+<div class="address-modal" data-address-modal hidden>
+    <div class="address-modal__backdrop" data-close-addresses></div>
+    <section class="address-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="address-modal-title">
+        <header class="address-modal__header">
+            <h2 id="address-modal-title">Địa chỉ của tôi</h2>
+            <button type="button" aria-label="Đóng" data-close-addresses>&times;</button>
+        </header>
+        <div class="address-modal__body">
+            <div class="address-modal__list" data-address-list></div>
+            <p class="address-modal__message" data-address-message role="status"></p>
+            <form class="address-form" data-address-form hidden>
+                <label>Họ tên người nhận<input name="recipientName" required maxlength="100" /></label>
+                <label>Số điện thoại<input name="recipientPhone" required maxlength="30" /></label>
+                <label>Địa chỉ<input name="address" required maxlength="255" /></label>
+                <button type="submit">Lưu địa chỉ</button>
+            </form>
+        </div>
+        <footer class="address-modal__footer">
+            <button type="button" class="address-modal__add-toggle" data-toggle-address-form>+ Thêm địa chỉ mới</button>
+        </footer>
+    </section>
+</div>

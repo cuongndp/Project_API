@@ -42,6 +42,7 @@ namespace DataAccess.Models
         public int Quantity { get; set; }
 
         public int Warranty { get; set; }
+        public decimal? VAT { get; set; }
 
         public bool Hot { get; set; }
 

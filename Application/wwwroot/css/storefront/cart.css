@@ -106,6 +106,169 @@
     cursor: pointer;
 }
 
+.checkout-address {
+    margin-top: 24px;
+    padding: 20px;
+    border: 1px solid #e1e1e1;
+    background: #fff;
+}
+
+.checkout-address__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.checkout-address__label {
+    color: #f45132;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.checkout-address p {
+    margin: 8px 0 0;
+    color: #555;
+}
+
+.checkout-address__change,
+.address-modal__add-toggle {
+    border: 1px solid #f45132;
+    background: #fff;
+    color: #f45132;
+    padding: 9px 14px;
+    cursor: pointer;
+}
+
+.address-modal[hidden] {
+    display: none;
+}
+
+.address-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+}
+
+.address-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 45%);
+}
+
+.address-modal__dialog {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(560px, 100%);
+    height: min(625px, 90vh);
+    overflow: auto;
+    background: #fff;
+    box-shadow: 0 12px 40px rgb(0 0 0 / 20%);
+}
+
+.address-modal__header,
+.address-modal__body,
+.address-modal__footer {
+    padding: 18px 22px;
+}
+
+.address-modal__header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+}
+
+.address-modal__header h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.address-modal__header button {
+    border: 0;
+    background: transparent;
+    color: #555;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.address-modal__body {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.address-modal__list:empty {
+    min-height: 1px;
+}
+
+.address-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #eee;
+}
+
+.address-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.address-option input {
+    margin-top: 4px;
+}
+
+.address-option strong,
+.address-option span {
+    display: block;
+}
+
+.address-option span {
+    margin-top: 4px;
+    color: #666;
+}
+
+.address-modal__message {
+    color: #d33;
+}
+
+.address-form {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+.address-form[hidden] {
+    display: none;
+}
+
+.address-form label {
+    display: grid;
+    gap: 5px;
+    color: #444;
+}
+
+.address-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.address-form button {
+    justify-self: end;
+    padding: 10px 18px;
+    border: 0;
+    background: #f45132;
+    color: #fff;
+    cursor: pointer;
+}
+
 @media (max-width: 600px) {
     .cart-page__header {
         display: block;

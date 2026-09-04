@@ -158,13 +158,33 @@ function formatPrice(value) {
     return Number.isFinite(price) ? `${price.toLocaleString("vi-VN")}đ` : "Liên hệ"
 }
 
+function getPriceAfterVat(product, price) {
+    const vat = Number(getProductValue(product, "vat") ?? 0)
+    const numericPrice = Number(price)
+    return Number.isFinite(numericPrice) && Number.isFinite(vat)
+    ? Math.max(numericPrice * (1 + vat / 100), 0)
+        : numericPrice
+}
+
+function getVatLabel(product) {
+    const vat = Number(getProductValue(product, "vat") ?? 0)
+    return Number.isFinite(vat) && vat > 0 ? `VAT: ${vat}%` : ""
+}
+
+function getVatAmount(product, price) {
+    const vat = Number(getProductValue(product, "vat") ?? 0)
+    const numericPrice = Number(price)
+    return Number.isFinite(numericPrice) && Number.isFinite(vat)
+        ? numericPrice * vat / 100
+        : 0
+}
+
 function createProductCard(product, cardClass) {
     const productName = getProductValue(product, "productName") || "Sản phẩm"
-    const price = Number(getProductValue(product, "price"))
-    const promotionPrice = Number(getProductValue(product, "promotionPrice"))
-    const discount = price > promotionPrice && promotionPrice > 0
-        ? `-${Math.round((1 - promotionPrice / price) * 100)}%`
-        : ""
+    const rawPrice = Number(getProductValue(product, "price"))
+    const price = getPriceAfterVat(product, rawPrice)
+    const rawPromotionPrice = Number(getProductValue(product, "promotionPrice"))
+    const promotionPrice = getPriceAfterVat(product, rawPromotionPrice)
     const productId = getProductValue(product, "productID") ?? getProductValue(product, "productId") ?? 0
 
     const card = document.createElement("div")
@@ -204,16 +224,15 @@ function createProductCard(product, cardClass) {
     oldPriceLink.href = "#"
     oldPriceLink.textContent = formatPrice(price)
     oldPrice.appendChild(oldPriceLink)
-    if (discount) {
-        const discountText = document.createElement("span")
-        discountText.textContent = discount
-        oldPrice.appendChild(discountText)
-    }
     text.appendChild(oldPrice)
 
     const currentPrice = document.createElement("li")
     currentPrice.textContent = formatPrice(promotionPrice)
     text.appendChild(currentPrice)
+
+    const vat = document.createElement("li")
+    vat.textContent = getVatLabel(product)
+    if (vat.textContent) text.appendChild(vat)
 
     const gift = document.createElement("li")
     gift.textContent = "Quà 500.000đ"
@@ -248,8 +267,10 @@ function renderRelatedProducts(products) {
                 ${items.map(product => {
                     const productId = getProductValue(product, "productID") ?? getProductValue(product, "productId") ?? 0
                     const productName = getProductValue(product, "productName") || "Sản phẩm"
-                    const price = Number(getProductValue(product, "promotionPrice") ?? getProductValue(product, "price") ?? 0)
+                    const rawPrice = getProductValue(product, "promotionPrice") ?? getProductValue(product, "price") ?? 0
+                    const price = getPriceAfterVat(product, rawPrice)
                     const image = getProductValue(product, "mainImage") || "/images/branding/AnhDau.PNG"
+                    const vat = getVatLabel(product)
                     return `
                         <td class='td'>
                             <div class='top'>
@@ -261,6 +282,7 @@ function renderRelatedProducts(products) {
                             <div class='info'>
                                 <a href='/Storefront/ProductDetails?id=${productId}' class='text'>${productName}</a><br />
                                 <h3>${formatPrice(price)}</h3>
+                                ${vat ? `<small>${vat}</small>` : ""}
                             </div>
                         </td>
                     `
@@ -347,7 +369,11 @@ function clearAccessTokenAndRedirect() {
     sessionStorage.removeItem("accessToken")
     sessionStorage.removeItem("AccessToken")
     localStorage.removeItem("userName")
-    window.location.href = "/Storefront/Login"
+    window.location.replace("/Storefront/Login")
+}
+
+function isAuthenticationError(error) {
+    return error?.isAuthenticationError === true
 }
 
 async function refreshAccessToken() {
@@ -366,7 +392,9 @@ async function refreshAccessToken() {
             // The refresh API currently returns the JWT as text/plain.
         }
         if (!response.ok || typeof refreshedToken !== "string" || !refreshedToken) {
-            throw new Error("Không thể cấp lại phiên đăng nhập.")
+            const error = new Error("Không thể cấp lại phiên đăng nhập.")
+            error.isAuthenticationError = true
+            throw error
         }
 
         saveAccessToken(refreshedToken)
@@ -381,7 +409,13 @@ async function refreshAccessToken() {
 async function authenticatedFetch(url, options = {}) {
     const requestOptions = { ...options, credentials: "include" }
     const headers = new Headers(requestOptions.headers || {})
-    const accessToken = await ensureAccessToken()
+    let accessToken
+    try {
+        accessToken = await ensureAccessToken()
+    } catch (error) {
+        clearAccessTokenAndRedirect()
+        throw error
+    }
     headers.set("Authorization", `Bearer ${accessToken}`)
     requestOptions.headers = headers
 
@@ -392,9 +426,17 @@ async function authenticatedFetch(url, options = {}) {
         const refreshedToken = await refreshAccessToken()
         const retryHeaders = new Headers(requestOptions.headers)
         retryHeaders.set("Authorization", `Bearer ${refreshedToken}`)
-        return fetch(url, { ...requestOptions, headers: retryHeaders })
+        const retryResponse = await fetch(url, { ...requestOptions, headers: retryHeaders })
+        if (retryResponse.status === 401) {
+            const error = new Error("Phiên đăng nhập không hợp lệ.")
+            error.isAuthenticationError = true
+            clearAccessTokenAndRedirect()
+            throw error
+        }
+        return retryResponse
     } catch (error) {
         clearAccessTokenAndRedirect()
+        error.isAuthenticationError = true
         throw error
     }
 }
@@ -433,6 +475,7 @@ async function addProductToCart(productId, button) {
         loadCartCount()
         alert(message || "Sản phẩm đã được thêm vào giỏ hàng.")
     } catch (error) {
+        if (isAuthenticationError(error)) return
         alert(error.message || "Không thể thêm sản phẩm vào giỏ hàng.")
         button.value = originalText
     } finally {
@@ -477,15 +520,20 @@ async function loadCartPage() {
             const cartItemId = item.cartItemID ?? item.CartItemID
             const name = item.productName ?? item.ProductName ?? "Sản phẩm"
             const quantity = Number(item.quantity ?? item.Quantity ?? 0)
-            const price = Number(item.promotionPrice ?? item.PromotionPrice ?? item.price ?? item.Price ?? 0)
+            const rawPrice = item.promotionPrice ?? item.PromotionPrice ?? item.price ?? item.Price ?? 0
+            const price = getPriceAfterVat(item, rawPrice)
+            const vatRate = Number(item.vat ?? item.VAT ?? 0)
+            const vatAmount = getVatAmount(item, rawPrice)
+            const vat = getVatLabel(item)
             const image = item.image ?? item.Image ?? "/images/branding/AnhDau.PNG"
             return `
-                <article class="cart-item" data-cart-item data-price="${price}" data-quantity="${quantity}">
+                <article class="cart-item" data-cart-item data-price="${price}" data-vat="${vatAmount}" data-vat-rate="${vatRate}" data-quantity="${quantity}">
                     <input type="checkbox" class="cart-item__check" data-cart-check checked />
                     <img src="${image}" alt="${name}" />
                     <div class="cart-item__info">
                         <h2>${name}</h2>
                         <p>Đơn giá: ${formatPrice(price)}</p>
+                        ${vat ? `<p data-cart-item-vat>${vat} (${formatPrice(vatAmount * quantity)})</p>` : ""}
                         <div class="cart-item__quantity">
                             <button type="button" data-quantity-change="-1">−</button>
                             <span data-cart-quantity>${quantity}</span>
@@ -517,6 +565,8 @@ function updateCartSummary(cartRoot) {
         }
         item.querySelector("[data-cart-quantity]").textContent = quantity
         item.querySelector("[data-cart-item-total]").textContent = formatPrice(price * quantity)
+        const vatElement = item.querySelector("[data-cart-item-vat]")
+        if (vatElement) vatElement.textContent = `VAT: ${item.dataset.vatRate}% (${formatPrice(Number(item.dataset.vat || 0) * quantity)})`
     })
     cartRoot.querySelector("[data-cart-total]").textContent = formatPrice(total)
     cartRoot.querySelector("[data-cart-selected]").textContent = `${selectedCount} sản phẩm được chọn`
@@ -539,51 +589,140 @@ function bindCartControls(cartRoot) {
         }
         if (event.target.matches("[data-cart-check], [data-cart-select-all]")) updateCartSummary(cartRoot)
     })
-    cartRoot.querySelector("[data-cart-checkout]").addEventListener("click", () => {
-        const selectedItems = [...cartRoot.querySelectorAll("[data-cart-item]")]
+    cartRoot.querySelector("[data-cart-checkout]").addEventListener("click", async event => {
+        const checkoutButton = event.currentTarget
+        const cartItemIds = [...cartRoot.querySelectorAll("[data-cart-item]")]
             .filter(item => item.querySelector("[data-cart-check]").checked)
-            .map(item => ({
-                productId: item.querySelector("[data-cart-item-id]").value,
-                quantity: Number(item.dataset.quantity),
-                name: item.querySelector("h2").textContent,
-                price: Number(item.dataset.price)
-            }))
-        if (!selectedItems.length) {
+            .map(item => Number(item.querySelector("[data-cart-item-id]").value))
+            .filter(Number.isInteger)
+        if (!cartItemIds.length) {
             alert("Vui lòng chọn ít nhất một sản phẩm.")
             return
         }
-        sessionStorage.setItem("checkoutItems", JSON.stringify(selectedItems))
-        window.location.href = "/Storefront/Checkout"
+
+        checkoutButton.disabled = true
+        checkoutButton.textContent = "ĐANG TẢI..."
+        try {
+            const response = await authenticatedFetch("/api/payment/CheckoutCart", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ CartItemIDs: cartItemIds })
+            })
+            const preview = await response.json().catch(() => null)
+            if (!response.ok || !preview) {
+                throw new Error(`Không thể chuẩn bị thanh toán (HTTP ${response.status}).`)
+            }
+            sessionStorage.setItem("checkoutPreview", JSON.stringify(preview))
+            window.location.href = "/Storefront/Checkout"
+        } catch (error) {
+            if (isAuthenticationError(error)) return
+            alert(error.message || "Không thể chuẩn bị thanh toán.")
+            checkoutButton.disabled = false
+            checkoutButton.textContent = "Mua hàng"
+        }
     })
 }
 
-function loadCheckoutPage() {
+async function loadCheckoutPage() {
     const checkoutRoot = document.querySelector("[data-checkout-page]")
     if (!checkoutRoot) return
 
     const list = checkoutRoot.querySelector("[data-checkout-list]")
     const totalElement = checkoutRoot.querySelector("[data-checkout-total]")
-    const items = JSON.parse(sessionStorage.getItem("checkoutItems") || "[]")
-    if (!items.length) {
+    const checkoutPreview = JSON.parse(sessionStorage.getItem("checkoutPreview") || "null")
+    initializeCheckoutAddresses(checkoutRoot)
+    const previewItems = checkoutPreview?.items || checkoutPreview?.Items || []
+    if (previewItems.length) {
+        list.innerHTML = previewItems.map(item => `
+            <article class="cart-item">
+                <img src="${item.image ?? item.Image ?? "/images/branding/AnhDau.PNG"}" alt="${item.productName ?? item.ProductName ?? "Sản phẩm"}" />
+                <div class="cart-item__info">
+                    <h2>${item.productName ?? item.ProductName ?? "Sản phẩm"}</h2>
+                    <p>Số lượng: ${item.quantity ?? item.Quantity ?? 0}</p>
+                    <p>Đơn giá: ${formatPrice(item.unitPrice ?? item.UnitPrice ?? 0)}</p>
+                </div>
+                <strong>${formatPrice(item.totalPrice ?? item.TotalPrice ?? 0)}</strong>
+            </article>
+        `).join("")
+        totalElement.textContent = formatPrice(checkoutPreview.totalAmount ?? checkoutPreview.TotalAmount ?? 0)
+        checkoutRoot.querySelector("[data-place-order]").addEventListener("click", () => {
+            alert("Chưa thể đặt hàng vì backend chưa có API tạo đơn hàng và thanh toán.")
+        })
+        return
+    }
+    if (!checkoutPreview || !previewItems.length) {
         list.innerHTML = "<p>Chưa có sản phẩm được chọn. <a href='/Storefront/Cart'>Quay lại giỏ hàng</a></p>"
         return
     }
+}
 
-    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    list.innerHTML = items.map(item => `
-        <article class="cart-item">
-            <div></div>
-            <div class="cart-item__info">
-                <h2>${item.name}</h2>
-                <p>Số lượng: ${item.quantity}</p>
-            </div>
-            <strong>${formatPrice(item.price * item.quantity)}</strong>
-        </article>
-    `).join("")
-    totalElement.textContent = formatPrice(total)
-    checkoutRoot.querySelector("[data-place-order]").addEventListener("click", () => {
-        alert("Chưa thể đặt hàng vì backend chưa có API tạo đơn hàng và thanh toán.")
+function initializeCheckoutAddresses(checkoutRoot) {
+    const modal = document.querySelector("[data-address-modal]")
+    const list = modal?.querySelector("[data-address-list]")
+    const selectedAddress = checkoutRoot.querySelector("[data-selected-address]")
+    if (!modal || !list || !selectedAddress) return
+
+    const message = modal.querySelector("[data-address-message]")
+    const form = modal.querySelector("[data-address-form]")
+    const showAddressModal = () => { modal.hidden = false }
+    const hideAddressModal = () => { modal.hidden = true }
+    const renderAddresses = addresses => {
+        list.innerHTML = addresses.length ? addresses.map((address, index) => {
+            const id = address.shippingAddressID ?? address.ShippingAddressID ?? index
+            const name = address.recipientName ?? address.RecipientName ?? ""
+            const phone = address.recipientPhone ?? address.RecipientPhone ?? ""
+            const value = address.address ?? address.Address ?? ""
+            return `<label class="address-option"><input type="radio" name="checkoutAddress" value="${id}" data-address-name="${name}" data-address-phone="${phone}" data-address-value="${value}" /><span><strong>${name} - ${phone}</strong><span>${value}</span></span></label>`
+        }).join("") : ""
+    }
+    const loadAddresses = async () => {
+        try {
+            const response = await authenticatedFetch("/api/payment/Get_ShippingAddress")
+            if (!response.ok) throw new Error("Không thể tải địa chỉ nhận hàng.")
+            renderAddresses(await response.json())
+        } catch (error) {
+            list.innerHTML = `<p>${error.message || "Không thể tải địa chỉ."}</p>`
+        }
+    }
+
+    checkoutRoot.querySelector("[data-open-addresses]").addEventListener("click", showAddressModal)
+    modal.querySelectorAll("[data-close-addresses]").forEach(button => button.addEventListener("click", hideAddressModal))
+    modal.querySelector("[data-toggle-address-form]").addEventListener("click", () => { form.hidden = !form.hidden })
+    list.addEventListener("change", event => {
+        const option = event.target.closest("input[name='checkoutAddress']")
+        if (!option) return
+        selectedAddress.textContent = `${option.dataset.addressName} - ${option.dataset.addressPhone}, ${option.dataset.addressValue}`
+        hideAddressModal()
     })
+    form.addEventListener("submit", async event => {
+        event.preventDefault()
+        message.textContent = ""
+        const submitButton = form.querySelector("button[type='submit']")
+        submitButton.disabled = true
+        try {
+            const response = await authenticatedFetch("/api/payment/Insert_ShippingAddress", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    RecipientName: form.elements.recipientName.value.trim(),
+                    RecipientPhone: form.elements.recipientPhone.value.trim(),
+                    Address: form.elements.address.value.trim()
+                })
+            })
+            if (!response.ok) throw new Error("Không thể thêm địa chỉ.")
+            form.reset()
+            form.hidden = true
+            await loadAddresses()
+            message.textContent = "Thêm địa chỉ thành công."
+        } catch (error) {
+            if (isAuthenticationError(error)) return
+            message.textContent = error.message || "Không thể thêm địa chỉ."
+        } finally {
+            submitButton.disabled = false
+        }
+    })
+
+    loadAddresses()
 }
 
 async function ensureAccessToken() {
@@ -627,8 +766,11 @@ function renderProductDetail(product, products = []) {
     const productName = getProductValue(product, "productName") || "Sản phẩm"
     const categoryName = getProductValue(product, "categoryName") || "Sản phẩm"
     const stockQuantity = Number(getProductValue(product, "quantity") ?? 0)
-    const price = Number(getProductValue(product, "price") ?? 0)
-    const promotionPrice = Number(getProductValue(product, "promotionPrice") ?? getProductValue(product, "price") ?? 0)
+    const rawPrice = getProductValue(product, "price") ?? 0
+    const price = getPriceAfterVat(product, rawPrice)
+    const rawPromotionPrice = getProductValue(product, "promotionPrice") ?? getProductValue(product, "price") ?? 0
+    const promotionPrice = getPriceAfterVat(product, rawPromotionPrice)
+    const vatLabel = getVatLabel(product)
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : []
     const galleryImages = [getProductValue(product, "mainImage"), ...images].filter(Boolean).slice(0, 5)
     const attrs = Array.isArray(product.attributes) ? product.attributes : []
@@ -673,6 +815,7 @@ function renderProductDetail(product, products = []) {
         <br /><br /><br />
         <h2 style='color:#900;float:left'>${formatPrice(promotionPrice || price)}</h2>
         ${price > promotionPrice ? `<span style="float:left; margin: 10px 0 0 10px; color:#888; text-decoration: line-through;">${formatPrice(price)}</span>` : ""}
+        ${vatLabel ? `<p style="clear:both; color:#777; margin:8px 0 0;">${vatLabel}</p>` : ""}
         <br /><br /><br />
         <ul>
             <li class='li'>- Thương hiệu: ${getProductValue(product, "brandName") || "Đang cập nhật"}</li>

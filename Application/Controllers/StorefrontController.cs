@@ -1,9 +1,17 @@
+using Business.IServices;
+using DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers;
 
 public class StorefrontController : Microsoft.AspNetCore.Mvc.Controller
 {
+    public IPaymentServices _paymentServices;
+    public StorefrontController(IPaymentServices paymentServices)
+    {
+        _paymentServices = paymentServices;
+    }
     [HttpGet]
     public IActionResult Index() => View();
 
@@ -45,4 +53,6 @@ public class StorefrontController : Microsoft.AspNetCore.Mvc.Controller
 
     [HttpGet]
     public IActionResult ForgotPassword() => View();
+
+    
 }

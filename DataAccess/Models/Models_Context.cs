@@ -19,6 +19,7 @@ namespace DataAccess.Models
         public DbSet<dh_CartItem> dh_CartItem { get; set; }
         public DbSet<dh_Order> dh_Order { get; set; }
         public DbSet<dh_OrderItem> dh_OrderItem { get; set; }
+        public DbSet<dh_ShippingAddress> dh_ShippingAddress { get; set; }
 
     }
 }

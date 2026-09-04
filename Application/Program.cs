@@ -78,6 +78,7 @@ builder.Services.AddScoped<ITokenServices, TokenServices>();
 builder.Services.AddScoped<IJwt_Refresh, Jwt_Refresh>();
 builder.Services.AddScoped<IProduct, Product>();
 builder.Services.AddScoped<IApplicationDbConnection, ApplicationDbConnection>();
+builder.Services.AddScoped<IPaymentServices, PaymentServices>();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
